@@ -1,18 +1,9 @@
-import {
-  Alert,
-  Button,
-  Card,
-  CardContent,
-  Container,
-  Divider,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import React, { FC, useContext, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UnAuthContext } from "../contexts/UnAuthContext";
+import { firebaseApp } from "../lib/firebase";
+import { User } from "../utils/models";
 
 export const SignIn: FC = () => {
   const { setUser } = useContext(UnAuthContext);
@@ -21,7 +12,7 @@ export const SignIn: FC = () => {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>();
 
-  const handleSignIn = async () => {
+  const handleSubmit = async () => {
     setError(undefined);
     if (!email || !password) {
       setError("Please enter an email and password");
@@ -32,50 +23,108 @@ export const SignIn: FC = () => {
       return;
     }
 
-    const auth = getAuth();
+    const auth = getAuth(firebaseApp);
     const res = await signInWithEmailAndPassword(auth, email, password);
-    setUser(res.user);
+    const user: User = {
+      id: res.user.uid.toString(),
+      email: res.user.email!.toString(),
+      firstName: "",
+      lastName: "",
+      createdAt: "",
+      updatedAt: "",
+    };
+    setUser(user);
   };
 
   const navCreateAccount = () => navigation("/create-account");
 
   return (
-    <Container maxWidth="sm" sx={{ pt: 8 }}>
-      <Card>
-        <CardContent>
-          <Stack gap="2rem" paddingX="1rem">
-            <Typography variant="h4" textAlign="center">
-              Sign In
-            </Typography>
-            <TextField
-              label="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <TextField
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            {error && <Alert severity="error">{error}</Alert>}
+    <div className="min-h-screen bg-white flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 className="text-center text-3xl font-extrabold text-gray-900">
+          Sign in to your account
+        </h2>
+      </div>
 
-            <Button
-              variant="contained"
-              size="large"
-              sx={{ width: "12rem", alignSelf: "center", my: "1rem" }}
-              onClick={handleSignIn}
-            >
-              Sign In
-            </Button>
-            <Divider />
-            <Button variant="text" size="small" onClick={navCreateAccount}>
-              Create Account
-            </Button>
-          </Stack>
-        </CardContent>
-      </Card>
-    </Container>
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <form className="space-y-6" onSubmit={handleSubmit} method="POST">
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email address
+              </label>
+              <div className="mt-1">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Password
+              </label>
+              <div className="mt-1">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <input
+                  id="remember_me"
+                  name="remember_me"
+                  type="checkbox"
+                  className="h-4 w-4 text-pink-500 focus:ring-pink-400 border-gray-300 rounded"
+                />
+                <label
+                  htmlFor="remember_me"
+                  className="ml-2 block text-sm text-gray-900"
+                >
+                  Remember me
+                </label>
+              </div>
+
+              <div className="text-sm">
+                <a
+                  href="#"
+                  className="font-medium text-pink-500 hover:text-pink-600"
+                >
+                  Forgot your password?
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-500 hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+              >
+                Sign in
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 };
 
