@@ -14,7 +14,6 @@ import {
 import React, { FC, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UnAuthContext } from "../contexts/UnAuthContext";
-import { camelToTitleCase } from "../utils/miscFunctions";
 
 export const CreateAccount: FC = () => {
   const { setUser } = useContext(UnAuthContext);
