@@ -9,6 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import React, { FC, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UnAuthContext } from "../contexts/UnAuthContext";
@@ -20,7 +21,7 @@ export const SignIn: FC = () => {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>();
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     setError(undefined);
     if (!email || !password) {
       setError("Please enter an email and password");
@@ -31,14 +32,9 @@ export const SignIn: FC = () => {
       return;
     }
 
-    // api.signIn({ email, password }).then((user) => {
-    //   if (!user) {
-    //     setError("An error occurred");
-    //     return;
-    //   }
-    //   setUser(user);
-    //   navigation("/");
-    // });
+    const auth = getAuth();
+    const res = await signInWithEmailAndPassword(auth, email, password);
+    setUser(res.user);
   };
 
   const navCreateAccount = () => navigation("/create-account");

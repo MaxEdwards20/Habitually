@@ -1,5 +1,5 @@
 export type User = {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -8,7 +8,7 @@ export type User = {
 };
 
 export type Habit = {
-  id: number;
+  id: string;
   name: string;
   description: string;
   createdAt: string;
@@ -17,13 +17,13 @@ export type Habit = {
 };
 
 export type HabitLog = {
-  id: number;
+  id: string;
   habit: Habit;
   createdAt: string;
 };
 
 export type Schedule = {
-  id: number;
+  id: string;
   habit: Habit;
   days: Day[];
   time: string;
