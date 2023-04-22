@@ -1,21 +1,21 @@
 import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
-import HeaderNav from "../components/HeaderNav";
+import { HeaderNav } from "../components/HeaderNav";
 import CreateAccount from "../pages/CreateAccount";
 import HomePage from "../pages/Home";
 import { Profile } from "../pages/Profile";
 
-import SignIn from "../pages/Login";
+import { Login } from "../pages/Login";
 
-type RoutePath = "home" | "sign-in" | "create-account" | "profile";
+type RoutePath = "home" | "login" | "createAccount" | "profile";
 
 const pathPageMap: Record<RoutePath, JSX.Element> = {
   home: <HomePage />,
-  "sign-in": <SignIn />,
-  "create-account": <CreateAccount />,
+  login: <Login />,
+  createAccount: <CreateAccount />,
   profile: <Profile />,
 };
 
-export const unAuthRoutes: RoutePath[] = ["home", "sign-in", "create-account"];
+export const unAuthRoutes: RoutePath[] = ["home", "login", "createAccount"];
 export const authRoutes: RoutePath[] = ["home", "profile"];
 
 export const authRouter = createBrowserRouter([

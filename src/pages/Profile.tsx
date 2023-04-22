@@ -10,6 +10,7 @@ export const Profile = () => {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
+    console.log("Loading all habits");
     loadHabits();
   }, []);
 
@@ -27,7 +28,7 @@ export const Profile = () => {
 
   return (
     <div>
-      Profile
+      <h1> Profile Page</h1>
       <CreateHabit />
     </div>
   );

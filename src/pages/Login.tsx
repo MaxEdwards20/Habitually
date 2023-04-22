@@ -5,7 +5,7 @@ import { UnAuthContext } from "../contexts/UnAuthContext";
 import { auth } from "../lib/firebase";
 import { User } from "../utils/models";
 
-export const SignIn: FC = () => {
+export const Login: FC = () => {
   const { setUser } = useContext(UnAuthContext);
   const navigation = useNavigate();
   const [email, setEmail] = useState<string>("");
@@ -136,5 +136,3 @@ export const SignIn: FC = () => {
     </div>
   );
 };
-
-export default SignIn;
