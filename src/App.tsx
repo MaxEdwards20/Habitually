@@ -29,6 +29,7 @@ function App() {
   }, [loggedIn, loading]);
 
   return (
+    // TODO: Look into authRouter and unAuthRouter docs to see why they won't show anything
     <>
       {user ? (
         <AuthContext.Provider value={{ user, setUser, logout }}>
