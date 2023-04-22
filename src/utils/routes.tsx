@@ -1,39 +1,22 @@
 import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
 import HeaderNav from "../components/HeaderNav";
 import CreateAccount from "../pages/CreateAccount";
-import { DashboardPage } from "../pages/DashboardPage";
-import HomePage from "../pages/HomePage";
-import ProfilePage from "../pages/ProfilePage";
-import { SchedulePage } from "../pages/SchedulePage";
-import { SchedulesPage } from "../pages/SchedulesPage";
-import SignIn from "../pages/SignIn";
+import HomePage from "../pages/Home";
+import { Profile } from "../pages/Profile";
 
-type RoutePath =
-  | "home"
-  | "dashboard"
-  | "profile"
-  | "schedule/:id"
-  | "sign-in"
-  | "create-account"
-  | "schedules";
+import SignIn from "../pages/Login";
+
+type RoutePath = "home" | "sign-in" | "create-account" | "profile";
 
 const pathPageMap: Record<RoutePath, JSX.Element> = {
   home: <HomePage />,
-  dashboard: <DashboardPage />,
-  profile: <ProfilePage />,
-  "schedule/:id": <SchedulePage />,
   "sign-in": <SignIn />,
   "create-account": <CreateAccount />,
-  schedules: <SchedulesPage />,
+  profile: <Profile />,
 };
 
 export const unAuthRoutes: RoutePath[] = ["home", "sign-in", "create-account"];
-export const authRoutes: RoutePath[] = [
-  "dashboard",
-  "schedule/:id",
-  "profile",
-  "schedules",
-];
+export const authRoutes: RoutePath[] = ["home", "profile"];
 
 export const authRouter = createBrowserRouter([
   {
@@ -41,7 +24,7 @@ export const authRouter = createBrowserRouter([
     element: <HeaderNav auth={true} />,
     children: [
       ...generateRouteObjects(authRoutes),
-      { path: "*", element: <Navigate to="dashboard" replace /> },
+      { path: "*", element: <Navigate to="home" replace /> },
     ],
   },
 ]);

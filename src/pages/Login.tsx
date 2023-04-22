@@ -1,8 +1,8 @@
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { FC, useContext, useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { FC, FormEvent, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UnAuthContext } from "../contexts/UnAuthContext";
-import { firebaseApp } from "../lib/firebase";
+import { auth } from "../lib/firebase";
 import { User } from "../utils/models";
 
 export const SignIn: FC = () => {
@@ -10,9 +10,11 @@ export const SignIn: FC = () => {
   const navigation = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [error, setError] = useState<string>();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setError(undefined);
     if (!email || !password) {
       setError("Please enter an email and password");
@@ -23,8 +25,8 @@ export const SignIn: FC = () => {
       return;
     }
 
-    const auth = getAuth(firebaseApp);
     const res = await signInWithEmailAndPassword(auth, email, password);
+    console.log(res);
     const user: User = {
       id: res.user.uid.toString(),
       email: res.user.email!.toString(),
@@ -34,9 +36,8 @@ export const SignIn: FC = () => {
       updatedAt: "",
     };
     setUser(user);
+    navigation("/profile");
   };
-
-  const navCreateAccount = () => navigation("/create-account");
 
   return (
     <div className="min-h-screen bg-white flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -48,7 +49,12 @@ export const SignIn: FC = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit} method="POST">
+          <form
+            className="space-y-6"
+            onSubmit={(e) => {
+              handleSubmit(e);
+            }}
+          >
             <div>
               <label
                 htmlFor="email"
@@ -63,6 +69,7 @@ export const SignIn: FC = () => {
                   type="email"
                   autoComplete="email"
                   required
+                  onChange={(e) => setEmail(e.target.value)}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
                 />
               </div>
@@ -82,6 +89,7 @@ export const SignIn: FC = () => {
                   type="password"
                   autoComplete="current-password"
                   required
+                  onChange={(e) => setPassword(e.target.value)}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
                 />
               </div>
@@ -93,6 +101,7 @@ export const SignIn: FC = () => {
                   id="remember_me"
                   name="remember_me"
                   type="checkbox"
+                  onChange={(e) => setRememberMe(e.target.checked)}
                   className="h-4 w-4 text-pink-500 focus:ring-pink-400 border-gray-300 rounded"
                 />
                 <label

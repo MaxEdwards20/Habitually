@@ -3,7 +3,7 @@ import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import React, { FC, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UnAuthContext } from "../contexts/UnAuthContext";
-import { firebaseApp } from "../lib/firebase";
+import { auth } from "../lib/firebase";
 import { User } from "../utils/models";
 
 export const CreateAccount: FC = () => {
@@ -15,7 +15,8 @@ export const CreateAccount: FC = () => {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setError(undefined);
     console.log("creating user");
     if (!(email && password)) {
@@ -26,8 +27,6 @@ export const CreateAccount: FC = () => {
       setError("Please enter a valid email");
       return;
     }
-
-    const auth = getAuth(firebaseApp);
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user: User = {
       id: res.user.uid.toString(),
@@ -63,7 +62,12 @@ export const CreateAccount: FC = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6">
+          <form
+            className="space-y-6"
+            onSubmit={(e) => {
+              handleSubmit(e);
+            }}
+          >
             <div>
               <label
                 htmlFor="email"
@@ -105,8 +109,7 @@ export const CreateAccount: FC = () => {
             </div>
             <div>
               <button
-                type="button"
-                onClick={handleSubmit}
+                type="submit"
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-500 hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
               >
                 Sign up
