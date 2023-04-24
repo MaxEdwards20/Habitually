@@ -1,6 +1,7 @@
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { RouterProvider } from "react-router-dom";
+import { Outlet, RouterProvider } from "react-router-dom";
+import { NavBar } from "./components/Navbar";
 import { AuthContext } from "./contexts/AuthContext";
 import { UnAuthContext } from "./contexts/UnAuthContext";
 import { auth } from "./lib/firebase";
@@ -9,7 +10,8 @@ import { User } from "./utils/models";
 import { authRouter, unAuthRouter } from "./utils/routes";
 
 function App() {
-  const { user, setUser, logout } = useUserInfo();
+  const [user, setUser] = useState<User>();
+  const { logout } = useUserInfo();
   const [loading, setLoading] = useState(true);
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -17,7 +19,10 @@ function App() {
     const cleanup = onAuthStateChanged(auth, (user) => {
       setLoading(false);
       if (user !== null) {
-        setUser(user as unknown as User);
+        let newUser: User = {} as User;
+        newUser.id = user.uid;
+        newUser.email = user.email ? user.email : "";
+        setUser(newUser);
         setLoggedIn(!!user);
       } else {
         setUser(undefined);
@@ -29,11 +34,10 @@ function App() {
   }, [loggedIn, loading]);
 
   return (
-    // TODO: Look into authRouter and unAuthRouter docs to see why they won't show anything
     <>
       {user ? (
         <AuthContext.Provider value={{ user, setUser, logout }}>
-          <RouterProvider router={authRouter} />
+          <RouterProvider router={authRouter}></RouterProvider>
         </AuthContext.Provider>
       ) : (
         <UnAuthContext.Provider value={{ setUser }}>

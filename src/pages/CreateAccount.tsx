@@ -30,11 +30,8 @@ export const CreateAccount: FC = () => {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user: User = {
       id: res.user.uid.toString(),
-      firstName,
-      lastName,
+
       email,
-      createdAt: "",
-      updatedAt: "",
     };
     setUser(user);
   };
@@ -121,5 +118,3 @@ export const CreateAccount: FC = () => {
     </div>
   );
 };
-
-export default CreateAccount;

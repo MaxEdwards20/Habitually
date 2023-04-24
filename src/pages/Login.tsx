@@ -30,10 +30,6 @@ export const Login: FC = () => {
     const user: User = {
       id: res.user.uid.toString(),
       email: res.user.email!.toString(),
-      firstName: "",
-      lastName: "",
-      createdAt: "",
-      updatedAt: "",
     };
     setUser(user);
     navigation("/profile");
