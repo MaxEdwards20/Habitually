@@ -1,36 +1,57 @@
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import React, { useState } from "react";
-import { Day } from "../utils/models";
+import { db } from "../lib/firebase";
+import { Day, Habit } from "../utils/models";
 
-export const CreateHabit = () => {
+type CreateHabitProps = {
+  habits: Habit[];
+  setHabits: (habits: Habit[]) => void;
+};
+
+export const CreateHabit = ({ setHabits, habits }: CreateHabitProps) => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [days, setDays] = useState({
-    monday: false,
-    tuesday: false,
-    wednesday: false,
-    thursday: false,
-    friday: false,
-    saturday: false,
-    sunday: false,
+  const [daysList, setDays] = useState({
+    Monday: false,
+    Tuesday: false,
+    Wednesday: false,
+    Thursday: false,
+    Friday: false,
+    Saturday: false,
+    Sunday: false,
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted with values:", {
-      date,
-      time,
-      title,
-      description,
-      days,
-    });
     if (!date || !time || !title) {
       console.log("Please fill out all fields");
       return;
     }
 
+    const trueDays = [];
+    for (const day in daysList) {
+      if (day) {
+        trueDays.push(day);
+      }
+    }
+
+    const habit: Habit = {
+      startDate: date,
+      time,
+      description,
+      name: title,
+      days: trueDays,
+      // How to fix this to allow for type of Day instead of string?
+    };
+
     // Add your habit creation logic here
+    console.log("Submitting form with values:", habit);
+
+    const docRef = await addDoc(collection(db, "habits"), habit);
+    habit.id = docRef.id;
+    setHabits([...habits, habit as Habit]);
   };
 
   return (
@@ -107,8 +128,10 @@ export const CreateHabit = () => {
             <input
               type="checkbox"
               id="monday"
-              checked={days.monday}
-              onChange={(e) => setDays({ ...days, monday: e.target.checked })}
+              checked={daysList.Monday}
+              onChange={(e) =>
+                setDays({ ...daysList, Monday: e.target.checked })
+              }
               className="form-checkbox h-5 w-5 text-pink-500"
             />
             <label htmlFor="monday" className="ml-2 block text-gray-700">
@@ -120,8 +143,10 @@ export const CreateHabit = () => {
             <input
               type="checkbox"
               id="tuesday"
-              checked={days.tuesday}
-              onChange={(e) => setDays({ ...days, tuesday: e.target.checked })}
+              checked={daysList.Tuesday}
+              onChange={(e) =>
+                setDays({ ...daysList, Tuesday: e.target.checked })
+              }
               className="form-checkbox h-5 w-5 text-pink-500"
             />
             <label htmlFor="tuesday" className="ml-2 block text-gray-700">
@@ -133,9 +158,9 @@ export const CreateHabit = () => {
             <input
               type="checkbox"
               id="wednesday"
-              checked={days.wednesday}
+              checked={daysList.Wednesday}
               onChange={(e) =>
-                setDays({ ...days, wednesday: e.target.checked })
+                setDays({ ...daysList, Wednesday: e.target.checked })
               }
               className="form-checkbox h-5 w-5 text-pink-500"
             />
@@ -148,8 +173,10 @@ export const CreateHabit = () => {
             <input
               type="checkbox"
               id="thursday"
-              checked={days.thursday}
-              onChange={(e) => setDays({ ...days, thursday: e.target.checked })}
+              checked={daysList.Thursday}
+              onChange={(e) =>
+                setDays({ ...daysList, Thursday: e.target.checked })
+              }
               className="form-checkbox h-5 w-5 text-pink-500"
             />
             <label htmlFor="thursday" className="ml-2 block text-gray-700">
@@ -161,8 +188,10 @@ export const CreateHabit = () => {
             <input
               type="checkbox"
               id="friday"
-              checked={days.friday}
-              onChange={(e) => setDays({ ...days, friday: e.target.checked })}
+              checked={daysList.Friday}
+              onChange={(e) =>
+                setDays({ ...daysList, Friday: e.target.checked })
+              }
               className="form-checkbox h-5 w-5 text-pink-500"
             />
             <label htmlFor="friday" className="ml-2 block text-gray-700">
@@ -174,8 +203,10 @@ export const CreateHabit = () => {
             <input
               type="checkbox"
               id="saturday"
-              checked={days.saturday}
-              onChange={(e) => setDays({ ...days, saturday: e.target.checked })}
+              checked={daysList.Saturday}
+              onChange={(e) =>
+                setDays({ ...daysList, Saturday: e.target.checked })
+              }
               className="form-checkbox h-5 w-5 text-pink-500"
             />
             <label htmlFor="saturday" className="ml-2 block text-gray-700">
@@ -187,8 +218,10 @@ export const CreateHabit = () => {
             <input
               type="checkbox"
               id="sunday"
-              checked={days.sunday}
-              onChange={(e) => setDays({ ...days, sunday: e.target.checked })}
+              checked={daysList.Sunday}
+              onChange={(e) =>
+                setDays({ ...daysList, Sunday: e.target.checked })
+              }
               className="form-checkbox h-5 w-5 text-pink-500"
             />
             <label htmlFor="sunday" className="ml-2 block text-gray-700">

@@ -1,5 +1,6 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { CreateHabit } from "../components/CreateHabit";
 import { AuthContext } from "../contexts/AuthContext";
 import { db } from "../lib/firebase";
@@ -7,16 +8,23 @@ import { Habit } from "../utils/models";
 
 export const Profile = () => {
   const [habits, setHabits] = useState<Habit[]>([]);
-  const { user } = useContext(AuthContext);
+  const user = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log("Loading all habits");
+
+    if (!user) {
+      navigate("/login");
+      return;
+    }
     loadHabits();
   }, []);
 
   async function loadHabits() {
     const querySnapshot = await getDocs(
-      query(collection(db, "habits"), where("userId", "==", user.id))
+      query(collection(db, "habits"), where("userId", "==", user!!.id))
     );
     const habits: Habit[] = [];
     querySnapshot.forEach((doc) => {
@@ -29,7 +37,7 @@ export const Profile = () => {
   return (
     <div>
       <h1> Profile Page</h1>
-      <CreateHabit />
+      <CreateHabit habits={habits} setHabits={setHabits} />
     </div>
   );
 };

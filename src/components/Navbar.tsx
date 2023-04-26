@@ -5,7 +5,6 @@ import { auth } from "../lib/firebase";
 
 export const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
-  const { logout } = useContext(AuthContext);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -14,9 +13,7 @@ export const NavBar = () => {
   const handleLogout = () => {
     console.log("Logging out...");
     auth.signOut();
-    logout();
     setShowMenu(false);
-    toggleMenu();
   };
 
   return (

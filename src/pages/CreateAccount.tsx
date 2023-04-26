@@ -15,7 +15,7 @@ export const CreateAccount: FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError(undefined);
+    setError("Loading...");
     console.log("creating user");
     if (!(email && password)) {
       setError("Please enter all fields");
@@ -27,6 +27,7 @@ export const CreateAccount: FC = () => {
     }
     const res = await createUserWithEmailAndPassword(auth, email, password);
     console.log("Created user : ", res);
+    setError(undefined);
   };
 
   const switchToLogin = () => navigate("/sign-in");
@@ -107,6 +108,7 @@ export const CreateAccount: FC = () => {
             </div>
           </form>
         </div>
+        {error && <div className="text-red-500">{error}</div>}
       </div>
     </div>
   );

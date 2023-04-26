@@ -6,7 +6,7 @@ import { auth } from "../lib/firebase";
 import { User } from "../utils/models";
 
 export const Login: FC = () => {
-  const navigation = useNavigate();
+  const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [rememberMe, setRememberMe] = useState<boolean>(false);
@@ -15,6 +15,8 @@ export const Login: FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(undefined);
+    console.log("logging in with email: ", email);
+    console.log("password:", password);
     if (!email || !password) {
       setError("Please enter an email and password");
       return;
@@ -25,6 +27,9 @@ export const Login: FC = () => {
     }
     const res = await signInWithEmailAndPassword(auth, email, password);
     console.log(res);
+    if (!res.user) {
+      setError("Invalid email or password");
+    }
   };
 
   return (
@@ -120,6 +125,7 @@ export const Login: FC = () => {
             </div>
           </form>
         </div>
+        {error && <div className="text-red-500">{error}</div>}
       </div>
     </div>
   );
