@@ -6,7 +6,6 @@ import { auth } from "../lib/firebase";
 import { User } from "../utils/models";
 
 export const Login: FC = () => {
-  const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [rememberMe, setRememberMe] = useState<boolean>(false);

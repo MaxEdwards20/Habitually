@@ -16,6 +16,7 @@ export const Profile = () => {
     console.log("Loading all habits");
 
     if (!user) {
+      debugger;
       navigate("/login");
       return;
     }

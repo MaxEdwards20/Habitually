@@ -6,7 +6,6 @@ import { auth } from "../lib/firebase";
 import { User } from "../utils/models";
 
 export const CreateAccount: FC = () => {
-  const navigate = useNavigate();
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -30,7 +29,7 @@ export const CreateAccount: FC = () => {
     setError(undefined);
   };
 
-  const switchToLogin = () => navigate("/sign-in");
+  // const switchToLogin = () => navigate("/sign-in");
 
   const makeTextFieldProps = (
     value: string,

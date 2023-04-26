@@ -17,7 +17,7 @@ export const Layout = () => {
         newUser.id = user.uid;
         newUser.email = user.email ? user.email : "";
         setUser(newUser);
-        setLoggedIn(!!user);
+        setLoggedIn(!!newUser);
       } else {
         setUser(null);
         setLoggedIn(false);
