@@ -2,12 +2,10 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import React, { FC, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UnAuthContext } from "../contexts/UnAuthContext";
 import { auth } from "../lib/firebase";
 import { User } from "../utils/models";
 
 export const CreateAccount: FC = () => {
-  const { setUser } = useContext(UnAuthContext);
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
@@ -28,12 +26,7 @@ export const CreateAccount: FC = () => {
       return;
     }
     const res = await createUserWithEmailAndPassword(auth, email, password);
-    const user: User = {
-      id: res.user.uid.toString(),
-
-      email,
-    };
-    setUser(user);
+    console.log("Created user : ", res);
   };
 
   const switchToLogin = () => navigate("/sign-in");

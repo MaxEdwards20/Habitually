@@ -6,7 +6,6 @@ import { auth } from "../lib/firebase";
 import { User } from "../utils/models";
 
 export const Login: FC = () => {
-  const { setUser } = useContext(UnAuthContext);
   const navigation = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -24,15 +23,8 @@ export const Login: FC = () => {
       setError("Please enter a valid email");
       return;
     }
-
     const res = await signInWithEmailAndPassword(auth, email, password);
     console.log(res);
-    const user: User = {
-      id: res.user.uid.toString(),
-      email: res.user.email!.toString(),
-    };
-    setUser(user);
-    navigation("/profile");
   };
 
   return (
