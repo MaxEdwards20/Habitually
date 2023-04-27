@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
 import { NavBar } from "../components/Navbar";
+import { Calendar } from "../pages/Calendar";
 import { CreateAccount } from "../pages/CreateAccount";
 import { Home } from "../pages/Home";
 import { Layout } from "../pages/Layout";
@@ -31,7 +32,12 @@ export const router = createBrowserRouter([
         path: "/create-account",
         element: <CreateAccount></CreateAccount>,
       },
-      // { path: "*", element: <Navigate to="home" replace /> },
+      {
+        path: "/calendar",
+        element: <Calendar></Calendar>,
+      },
+
+      { path: "*", element: <Navigate to="home" replace /> },
     ],
   },
 ]);

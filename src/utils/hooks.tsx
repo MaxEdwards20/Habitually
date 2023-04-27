@@ -1,25 +1,26 @@
+import { signOut } from "firebase/auth";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Api } from "../api/api";
-import { User } from "./models";
-import { getToken, removeToken } from "./tokenFunctions";
+import { auth, db } from "../lib/firebase";
+import { Habit, User } from "./models";
 
-type UserInfo = () => {
-  user: User | undefined;
-  setUser: (user: User | undefined) => void;
-  logout: () => void;
+export const logout = () => {
+  console.log("Logging out...");
+  signOut(auth);
 };
 
-export const useUserInfo: UserInfo = () => {
-  const [user, setUser] = useState<User>();
-  const logout = () => {
-    removeToken();
-    setUser(undefined);
-  };
-
-  useEffect(() => {
-    if (user) return;
-    if (!getToken()) return;
-  }, []);
-
-  return { user, setUser, logout };
+export const loadHabits = async () => {
+  const querySnapshot = await getDocs(
+    query(
+      collection(db, "habits"),
+      where("userId", "==", auth.currentUser!!.uid)
+    )
+  );
+  const habits: Habit[] = [];
+  querySnapshot.forEach((doc) => {
+    const habit = doc.data() as Habit;
+    habits.push(habit);
+  });
+  return habits;
 };

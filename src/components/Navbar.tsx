@@ -3,6 +3,8 @@ import { FC, useContext, useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { auth } from "../lib/firebase";
 
+import { logout } from "../utils/hooks";
+
 export const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
 
@@ -15,9 +17,8 @@ export const NavBar = () => {
   };
 
   const handleLogout = () => {
-    console.log("Logging out...");
     setShowMenu(false);
-    signOut(auth);
+    handleLogout();
   };
 
   return (

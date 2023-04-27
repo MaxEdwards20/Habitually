@@ -1,11 +1,16 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { AiOutlineCalendar } from "react-icons/ai";
+import { FiLogOut, FiSettings } from "react-icons/fi";
+import { HiUserCircle } from "react-icons/hi";
+import { Link, useNavigate } from "react-router-dom";
 import { CreateHabit } from "../components/CreateHabit";
 import { Modal } from "../components/Modal";
 import { AuthContext } from "../contexts/AuthContext";
 import { db } from "../lib/firebase";
+import { logout } from "../utils/hooks";
 import { Habit } from "../utils/models";
+import { Calendar } from "./Calendar";
 
 export const Profile = () => {
   const [habits, setHabits] = useState<Habit[]>([]);
@@ -15,25 +20,11 @@ export const Profile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("Loading all habits");
     if (!user) {
       navigate("/login");
       return;
     }
-    loadHabits();
   }, []);
-
-  async function loadHabits() {
-    const querySnapshot = await getDocs(
-      query(collection(db, "habits"), where("userId", "==", user!!.id))
-    );
-    const habits: Habit[] = [];
-    querySnapshot.forEach((doc) => {
-      const habit = doc.data() as Habit;
-      habits.push(habit);
-    });
-    setHabits(habits);
-  }
 
   const handleCreateHabit = () => {
     setShowModal(true);
@@ -43,16 +34,40 @@ export const Profile = () => {
     setShowModal(false);
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
     <>
-      <div className="mt-30">
-        <button onClick={handleCreateHabit} className="hover:text-pink-500">
-          Create a Habit
-        </button>
-        <Modal isOpen={showModal} onClose={handleCloseModal}>
-          <CreateHabit habits={habits} setHabits={setHabits} />
-        </Modal>
+      <div className="mt-30 flex flex-col items-center justify-center">
+        <div className="flex flex-row items-center justify-between w-full mb-10">
+          <HiUserCircle className="text-5xl text-pink-500" />
+          <div className="flex flex-row space-x-8">
+            <Link to="/calendar">
+              <AiOutlineCalendar className="text-3xl hover:text-pink-500 cursor-pointer" />
+            </Link>
+            <FiSettings className="text-3xl hover:text-pink-500 cursor-pointer" />
+            <FiLogOut
+              className="text-3xl hover:text-pink-500 cursor-pointer"
+              onClick={handleLogout}
+            />
+          </div>
+        </div>
+        <div className="flex flex-col items-center justify-center space-y-8">
+          <button
+            onClick={handleCreateHabit}
+            className="bg-pink-500 text-white px-6 py-3 rounded-md hover:bg-pink-600 transition-colors duration-300"
+          >
+            Create a Habit
+          </button>
+          {/* Add more items here */}
+        </div>
       </div>
+      <Modal isOpen={showModal} onClose={handleCloseModal}>
+        <CreateHabit habits={habits} setHabits={setHabits} />
+      </Modal>
     </>
   );
 };

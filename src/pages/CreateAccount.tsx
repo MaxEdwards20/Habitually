@@ -25,6 +25,7 @@ export const CreateAccount: FC = () => {
       return;
     }
     const res = await createUserWithEmailAndPassword(auth, email, password);
+
     console.log("Created user : ", res);
     setError(undefined);
   };
