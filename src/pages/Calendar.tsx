@@ -21,6 +21,21 @@ export const Calendar: React.FC = () => {
     { name: "Friday", abbr: "F" },
     { name: "Saturday", abbr: "Sa" },
   ];
+
+  const months = [
+    { name: "January", abbr: "Jan" },
+    { name: "February", abbr: "Feb" },
+    { name: "March", abbr: "Mar" },
+    { name: "April", abbr: "Apr" },
+    { name: "May", abbr: "May" },
+    { name: "June", abbr: "Jun" },
+    { name: "July", abbr: "Jul" },
+    { name: "August", abbr: "Aug" },
+    { name: "September", abbr: "Sep" },
+    { name: "October", abbr: "Oct" },
+    { name: "November", abbr: "Nov" },
+    { name: "December", abbr: "Dec" },
+  ];
   // Object mapping each day of the week to an array of habit names
   const habitsByDay: HabitsByDay = daysOfWeek.reduce((acc, day) => {
     // Filter the habits array to include only those that need to be done on this day
@@ -75,9 +90,17 @@ export const Calendar: React.FC = () => {
   if (!isLoaded) return <div className=" py-4 ">Loading...</div>;
   if (habits.length === 0) return <NoHabits></NoHabits>;
 
+  const date = new Date();
+  const displayDay =
+    daysOfWeek[date.getDay()].name +
+    ", " +
+    months[date.getMonth()].name +
+    " " +
+    +date.getDate();
+
   return (
     <div className="mt-16 bg-white rounded-lg shadow overflow-hidden">
-      <div className="text-4xl text-left px-4 py-2">Log Your Habits</div>
+      <div className="text-4xl text-left px-4 py-2">Log for {displayDay}</div>
       <table className="min-w-full leading-normal">
         <thead className="bg-pink-500 text-white">
           <tr>

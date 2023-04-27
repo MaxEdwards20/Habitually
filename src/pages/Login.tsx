@@ -1,5 +1,5 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { FC, FormEvent, useContext, useState } from "react";
+import { FC, FormEvent, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UnAuthContext } from "../contexts/UnAuthContext";
 import { auth } from "../lib/firebase";
@@ -10,6 +10,7 @@ export const Login: FC = () => {
   const [password, setPassword] = useState<string>("");
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [error, setError] = useState<string>();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,6 +30,12 @@ export const Login: FC = () => {
       setError("Invalid email or password");
     }
   };
+
+  useEffect(() => {
+    if (auth.currentUser) {
+      navigate("/profile");
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-white flex flex-col justify-center py-12 sm:px-6 lg:px-8">
