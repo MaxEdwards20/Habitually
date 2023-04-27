@@ -1,6 +1,6 @@
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import React, { useState } from "react";
-import { db } from "../lib/firebase";
+import { auth, db } from "../lib/firebase";
 import { Day, Habit } from "../utils/models";
 
 type CreateHabitProps = {
@@ -32,7 +32,7 @@ export const CreateHabit = ({ setHabits, habits }: CreateHabitProps) => {
 
     const trueDays = [];
     for (const day in daysList) {
-      if (day) {
+      if (daysList[day as keyof typeof daysList]) {
         trueDays.push(day);
       }
     }
@@ -43,6 +43,7 @@ export const CreateHabit = ({ setHabits, habits }: CreateHabitProps) => {
       description,
       name: title,
       days: trueDays,
+      userId: auth.currentUser!!.uid,
       // How to fix this to allow for type of Day instead of string?
     };
 
@@ -52,6 +53,19 @@ export const CreateHabit = ({ setHabits, habits }: CreateHabitProps) => {
     const docRef = await addDoc(collection(db, "habits"), habit);
     habit.id = docRef.id;
     setHabits([...habits, habit as Habit]);
+    setDate("");
+    setTime("");
+    setTitle("");
+    setDescription("");
+    setDays({
+      Monday: false,
+      Tuesday: false,
+      Wednesday: false,
+      Thursday: false,
+      Friday: false,
+      Saturday: false,
+      Sunday: false,
+    });
   };
 
   return (

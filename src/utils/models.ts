@@ -10,6 +10,7 @@ export type Habit = {
   time: string;
   startDate: string;
   description?: string;
+  userId: string;
 };
 
 export type HabitLog = {
