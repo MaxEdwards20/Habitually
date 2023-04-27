@@ -19,32 +19,35 @@ export const logout = () => {
 };
 
 export const loadHabits = async () => {
-  const querySnapshot = await getDocs(
+  verifyUser();
+  const habits: Habit[] = [];
+  const userHabits = await getDocs(
     query(
       collection(db, "habits"),
       where("userId", "==", auth.currentUser!!.uid)
     )
   );
-  const habits: Habit[] = [];
-  querySnapshot.forEach(async (doc) => {
-    const habit = doc.data() as Habit;
-    habit.id = doc.id;
+  userHabits.forEach(async (userHabit) => {
+    let habit = userHabit.data() as Habit;
+    habit.id = userHabit.id;
+    habit.logs = await getHabitLogs(habit.id);
     habits.push(habit);
-    // Get the habit logs
-    for (const habit of habits) {
-      const querySnapshot = await getDocs(
-        query(collection(db, `habits/${habit.id}/habitLogs`))
-      );
-      querySnapshot.forEach(async (doc) => {
-        if (!habit.logs) habit.logs = [];
-        const habitLog = doc.data() as HabitLog;
-        habitLog.id = doc.id;
-        habit.logs.push(habitLog);
-      });
-    }
   });
   console.log(habits);
   return habits;
+};
+
+const getHabitLogs = async (habitId: string) => {
+  const logs: HabitLog[] = [];
+  const habitLogs = await getDocs(
+    query(collection(db, `/habits/${habitId}/habitLogs`))
+  );
+  habitLogs.forEach(async (habitLog) => {
+    let log = habitLog.data() as HabitLog;
+    log.id = habitLog.id;
+    logs.push(log);
+  });
+  return logs;
 };
 
 type Coordinates = {
@@ -68,4 +71,11 @@ export const getLocation = (): Promise<Coordinates> => {
       reject(new Error("Geolocation is not supported by this browser."));
     }
   });
+};
+
+export const verifyUser = () => {
+  if (!auth.currentUser) {
+    console.error("User is not signed in and can't access this page.");
+    return;
+  }
 };

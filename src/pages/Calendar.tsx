@@ -33,7 +33,10 @@ export const Calendar: React.FC = () => {
   const [habitsCompleted, setHabitsCompleted] = useState(habitsByDay);
 
   useEffect(() => {
-    loadHabits().then((habits) => setHabits(habits));
+    loadHabits().then((habits) => {
+      console.log("Calendar habits:", habits);
+      setHabits(habits);
+    });
   }, []);
 
   const handleHabitLog = async (day: string, habit: Habit) => {
@@ -66,8 +69,6 @@ export const Calendar: React.FC = () => {
     const habitLogRef = collection(habitDoc.ref, "habitLogs");
     const res = await addDoc(habitLogRef, habitLog);
   };
-
-  if (!habits.length) return <NoHabits></NoHabits>;
 
   return (
     <div className="mt-16 bg-white rounded-lg shadow overflow-hidden">
