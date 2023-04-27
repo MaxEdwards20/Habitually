@@ -11,6 +11,7 @@ interface HabitsByDay {
 
 export const Calendar: React.FC = () => {
   const [habits, setHabits] = useState<Habit[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
   const daysOfWeek = [
     { name: "Sunday", abbr: "Su" },
     { name: "Monday", abbr: "M" },
@@ -36,6 +37,7 @@ export const Calendar: React.FC = () => {
     loadHabits().then((habits) => {
       console.log("Calendar habits:", habits);
       setHabits(habits);
+      setIsLoaded(true);
     });
   }, []);
 
@@ -69,6 +71,9 @@ export const Calendar: React.FC = () => {
     const habitLogRef = collection(habitDoc.ref, "habitLogs");
     const res = await addDoc(habitLogRef, habitLog);
   };
+
+  if (!isLoaded) return <div className=" py-4 ">Loading...</div>;
+  if (habits.length === 0) return <NoHabits></NoHabits>;
 
   return (
     <div className="mt-16 bg-white rounded-lg shadow overflow-hidden">

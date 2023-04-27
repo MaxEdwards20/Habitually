@@ -27,22 +27,24 @@ export const loadHabits = async () => {
       where("userId", "==", auth.currentUser!!.uid)
     )
   );
-  userHabits.forEach(async (userHabit) => {
+  userHabits.forEach((userHabit) => {
     let habit = userHabit.data() as Habit;
     habit.id = userHabit.id;
-    habit.logs = await getHabitLogs(habit.id);
     habits.push(habit);
   });
-  console.log(habits);
+
+  for (let habit of habits) {
+    habit.logs = await getHabitLogs(habit.id!!);
+  }
+  console.log("Habits: ", habits);
   return habits;
 };
 
 const getHabitLogs = async (habitId: string) => {
   const logs: HabitLog[] = [];
-  const habitLogs = await getDocs(
-    query(collection(db, `/habits/${habitId}/habitLogs`))
-  );
-  habitLogs.forEach(async (habitLog) => {
+  const url = `habits/${habitId}/habitLogs`;
+  const habitLogs = await getDocs(query(collection(db, url)));
+  habitLogs.forEach((habitLog) => {
     let log = habitLog.data() as HabitLog;
     log.id = habitLog.id;
     logs.push(log);

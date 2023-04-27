@@ -54,7 +54,6 @@ export const HabitMap = () => {
     const markers: MarkerType[] = habits
       .flatMap((habit) => {
         const slice = habit.logs?.slice(0, 2);
-        debugger;
         return slice?.map((log, index) => {
           if (!log.lat || !log.long || !log.id) {
             return undefined;
@@ -68,7 +67,6 @@ export const HabitMap = () => {
         });
       })
       .filter((marker) => marker !== undefined) as MarkerType[];
-    debugger;
     return markers;
   };
 
