@@ -11,6 +11,7 @@ import { db } from "../lib/firebase";
 import { logout } from "../utils/hooks";
 import { Habit } from "../utils/models";
 import { Calendar } from "./Calendar";
+import { HabitMap } from "./HabitMap";
 
 export const Profile = () => {
   const [habits, setHabits] = useState<Habit[]>([]);
@@ -62,12 +63,14 @@ export const Profile = () => {
           >
             Create a Habit
           </button>
+
           {/* Add more items here */}
         </div>
       </div>
       <Modal isOpen={showModal} onClose={handleCloseModal}>
         <CreateHabit habits={habits} setHabits={setHabits} />
       </Modal>
+      <HabitMap lat={0} long={10}></HabitMap>
     </>
   );
 };
