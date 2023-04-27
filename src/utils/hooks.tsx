@@ -20,7 +20,9 @@ export const loadHabits = async () => {
   const habits: Habit[] = [];
   querySnapshot.forEach((doc) => {
     const habit = doc.data() as Habit;
+    habit.id = doc.id;
     habits.push(habit);
   });
+  console.log("Habits: ", habits);
   return habits;
 };

@@ -8,9 +8,6 @@ import { logout } from "../utils/hooks";
 export const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
 
-  useEffect(() => {
-    console.log(auth.currentUser);
-  });
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);

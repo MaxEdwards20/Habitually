@@ -14,8 +14,8 @@ export type Habit = {
 };
 
 export type HabitLog = {
-  id: string;
-  habit: Habit;
+  id?: string;
+  habitId: string;
   createdAt: string;
 };
 

@@ -14,8 +14,7 @@ export const Login: FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(undefined);
-    console.log("logging in with email: ", email);
-    console.log("password:", password);
+
     if (!email || !password) {
       setError("Please enter an email and password");
       return;
