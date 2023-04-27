@@ -8,14 +8,13 @@ import { logout } from "../utils/hooks";
 export const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
 
-
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
 
   const handleLogout = () => {
     setShowMenu(false);
-    handleLogout();
+    logout();
   };
 
   return (

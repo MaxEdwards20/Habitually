@@ -11,6 +11,7 @@ export type Habit = {
   startDate: string;
   description?: string;
   userId: string;
+  logs?: HabitLog[];
 };
 
 export type HabitLog = {
@@ -19,6 +20,7 @@ export type HabitLog = {
   createdAt: string;
   lat?: number;
   long?: number;
+  dayCompleted: string;
 };
 
 export type Day = {

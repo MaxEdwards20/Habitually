@@ -6,6 +6,7 @@ import { Home } from "../pages/Home";
 import { Layout } from "../pages/Layout";
 import { Login } from "../pages/Login";
 import { Profile } from "../pages/Profile";
+import { HabitMap } from "../pages/HabitMap";
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
       {
         path: "/calendar",
         element: <Calendar></Calendar>,
+      },
+      {
+        path: "/habit-map",
+        element: <HabitMap></HabitMap>
       },
 
       { path: "*", element: <Navigate to="home" replace /> },

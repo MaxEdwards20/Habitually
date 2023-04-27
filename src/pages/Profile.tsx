@@ -46,9 +46,10 @@ export const Profile = () => {
         <div className="flex flex-row items-center justify-between w-full mb-10">
           <HiUserCircle className="text-5xl text-pink-500" />
           <div className="flex flex-row space-x-8">
-            <Link to="/calendar">
-              <AiOutlineCalendar className="text-3xl hover:text-pink-500 cursor-pointer" />
-            </Link>
+            <AiOutlineCalendar
+              onClick={() => navigate("/calendar")}
+              className="text-3xl hover:text-pink-500 cursor-pointer"
+            />
             <FiSettings className="text-3xl hover:text-pink-500 cursor-pointer" />
             <FiLogOut
               className="text-3xl hover:text-pink-500 cursor-pointer"
@@ -63,6 +64,19 @@ export const Profile = () => {
           >
             Create a Habit
           </button>
+          <button
+            onClick={() => navigate("/habit-map")}
+            className="bg-pink-500 text-white px-6 py-3 rounded-md hover:bg-pink-600 transition-colors duration-300"
+          >
+            Your Habit Locations
+          </button>
+
+          <button
+            onClick={() => navigate("/calendar")}
+            className="bg-pink-500 text-white px-6 py-3 rounded-md hover:bg-pink-600 transition-colors duration-300"
+          >
+            Log Your Progress
+          </button>
 
           {/* Add more items here */}
         </div>
@@ -70,7 +84,6 @@ export const Profile = () => {
       <Modal isOpen={showModal} onClose={handleCloseModal}>
         <CreateHabit habits={habits} setHabits={setHabits} />
       </Modal>
-      <HabitMap lat={0} long={10}></HabitMap>
     </>
   );
 };

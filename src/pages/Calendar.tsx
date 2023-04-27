@@ -28,7 +28,6 @@ export const Calendar: React.FC = () => {
       .map((habit) => habit.id!!);
 
     // Add the array of habit names to the accumulator object
-    console.log("Habits by day is : ", habitsForDay);
     return { ...acc, [day.name]: habitsForDay };
   }, {});
   const [habitsCompleted, setHabitsCompleted] = useState(habitsByDay);
@@ -60,6 +59,7 @@ export const Calendar: React.FC = () => {
     const habitLog: HabitLog = {
       habitId: habit.id!!,
       createdAt: new Date().toISOString(),
+      dayCompleted: day,
       lat,
       long,
     };
@@ -69,6 +69,7 @@ export const Calendar: React.FC = () => {
 
   return (
     <div className="mt-16 bg-white rounded-lg shadow overflow-hidden">
+      <div className="text-4xl text-left px-4 py-2">Log Your Habits</div>
       <table className="min-w-full leading-normal">
         <thead className="bg-pink-500 text-white">
           <tr>
