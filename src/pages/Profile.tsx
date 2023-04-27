@@ -65,7 +65,7 @@ export const Profile = () => {
               onClick={() => navigate("/calendar")}
               className="text-3xl hover:text-pink-500 cursor-pointer"
             />
-            <FiSettings className="text-3xl hover:text-pink-500 cursor-pointer" />
+            {/* <FiSettings className="text-3xl hover:text-pink-500 cursor-pointer" /> */}
             <FiLogOut
               className="text-3xl hover:text-pink-500 cursor-pointer"
               onClick={handleLogout}
