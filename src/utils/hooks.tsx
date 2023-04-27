@@ -10,7 +10,6 @@ import {
   where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { Api } from "../api/api";
 import { auth, db } from "../lib/firebase";
 import { Habit, HabitLog, User } from "./models";
 
