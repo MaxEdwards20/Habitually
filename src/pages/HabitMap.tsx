@@ -5,6 +5,7 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import React, { useEffect, useState } from "react";
+import { NoHabits } from "../components/NoHabits";
 import { getLocation, loadHabits } from "../utils/hooks";
 import { Habit, HabitLog } from "../utils/models";
 
@@ -33,6 +34,8 @@ export const HabitMap = () => {
     height: "400px",
     width: "100%",
   };
+
+  if (!habits.length) return <NoHabits></NoHabits>;
 
   return (
     <div className="py-4">

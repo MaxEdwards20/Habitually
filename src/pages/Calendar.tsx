@@ -1,16 +1,16 @@
 import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { NoHabits } from "../components/NoHabits";
 import { db } from "../lib/firebase";
 import { getLocation, loadHabits } from "../utils/hooks";
 import { Habit, HabitLog } from "../utils/models";
-
 interface HabitsByDay {
   [day: string]: string[];
 }
 
 export const Calendar: React.FC = () => {
   const [habits, setHabits] = useState<Habit[]>([]);
-
   const daysOfWeek = [
     { name: "Sunday", abbr: "Su" },
     { name: "Monday", abbr: "M" },
@@ -66,6 +66,8 @@ export const Calendar: React.FC = () => {
     const habitLogRef = collection(habitDoc.ref, "habitLogs");
     const res = await addDoc(habitLogRef, habitLog);
   };
+
+  if (!habits.length) return <NoHabits></NoHabits>;
 
   return (
     <div className="mt-16 bg-white rounded-lg shadow overflow-hidden">

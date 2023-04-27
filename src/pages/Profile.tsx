@@ -64,18 +64,18 @@ export const Profile = () => {
           >
             Create a Habit
           </button>
-          <button
-            onClick={() => navigate("/habit-map")}
-            className="bg-pink-500 text-white px-6 py-3 rounded-md hover:bg-pink-600 transition-colors duration-300"
-          >
-            Your Habit Locations
-          </button>
 
           <button
             onClick={() => navigate("/calendar")}
             className="bg-pink-500 text-white px-6 py-3 rounded-md hover:bg-pink-600 transition-colors duration-300"
           >
             Log Your Progress
+          </button>
+          <button
+            onClick={() => navigate("/habit-map")}
+            className="bg-pink-500 text-white px-6 py-3 rounded-md hover:bg-pink-600 transition-colors duration-300"
+          >
+            View Your Habit Map
           </button>
 
           {/* Add more items here */}
