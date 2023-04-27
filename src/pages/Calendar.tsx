@@ -1,7 +1,7 @@
 import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { db } from "../lib/firebase";
-import { loadHabits } from "../utils/hooks";
+import { getLocation, loadHabits } from "../utils/hooks";
 import { Habit, HabitLog } from "../utils/models";
 
 interface HabitsByDay {
@@ -38,20 +38,7 @@ export const Calendar: React.FC = () => {
   }, []);
 
   const handleHabitLog = async (day: string, habit: Habit) => {
-    const habitRef = doc(db, "habits", habit.id!!);
-    const habitDoc = await getDoc(habitRef);
-    if (!habitDoc.exists()) {
-      console.log("No such document!");
-      return;
-    }
-    const habitLog: HabitLog = {
-      habitId: habit.id!!,
-      createdAt: new Date().toISOString(),
-    };
-    const habitLogRef = collection(habitDoc.ref, "habitLogs");
-    const res = await addDoc(habitLogRef, habitLog);
     // Update state
-
     const newHabitsCompleted = { ...habitsCompleted };
     if (newHabitsCompleted[day].includes(habit.id!!)) {
       newHabitsCompleted[day] = newHabitsCompleted[day].filter(
@@ -61,6 +48,23 @@ export const Calendar: React.FC = () => {
       newHabitsCompleted[day] = [...newHabitsCompleted[day], habit.id!!];
     }
     setHabitsCompleted(newHabitsCompleted);
+
+    // Save the values
+    const { lat, long } = await getLocation();
+    const habitRef = doc(db, "habits", habit.id!!);
+    const habitDoc = await getDoc(habitRef);
+    if (!habitDoc.exists()) {
+      console.log("No such document!");
+      return;
+    }
+    const habitLog: HabitLog = {
+      habitId: habit.id!!,
+      createdAt: new Date().toISOString(),
+      lat,
+      long,
+    };
+    const habitLogRef = collection(habitDoc.ref, "habitLogs");
+    const res = await addDoc(habitLogRef, habitLog);
   };
 
   return (

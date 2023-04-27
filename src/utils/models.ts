@@ -17,6 +17,8 @@ export type HabitLog = {
   id?: string;
   habitId: string;
   createdAt: string;
+  lat?: number;
+  long?: number;
 };
 
 export type Day = {
