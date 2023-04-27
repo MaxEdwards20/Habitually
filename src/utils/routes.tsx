@@ -6,62 +6,32 @@ import { Layout } from "../pages/Layout";
 import { Login } from "../pages/Login";
 import { Profile } from "../pages/Profile";
 
-export const authRouter = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout></Layout>,
+    element: <Layout />,
     children: [
       {
         path: "/",
-        element: <NavBar></NavBar>,
-        children: [
-          {
-            path: "/",
-            element: <Home></Home>,
-          },
-          {
-            path: "profile",
-            element: <Profile></Profile>,
-          },
-          {
-            path: "login",
-            element: <Login></Login>,
-          },
-          {
-            path: "create-account",
-            element: <CreateAccount></CreateAccount>,
-          },
-          { path: "*", element: <Navigate to="home" replace /> },
-        ],
+        element: <Home></Home>,
       },
-    ],
-  },
-]);
-
-export const unAuthRouter = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout></Layout>,
-    children: [
       {
-        path: "/",
-        element: <NavBar></NavBar>,
-        children: [
-          {
-            path: "/",
-            element: <Home></Home>,
-          },
-          {
-            path: "login",
-            element: <Login></Login>,
-          },
-          {
-            path: "create-account",
-            element: <CreateAccount></CreateAccount>,
-          },
-          { path: "*", element: <Navigate to="home" replace /> },
-        ],
+        path: "/home",
+        element: <Home></Home>,
       },
+      {
+        path: "/profile",
+        element: <Profile></Profile>,
+      },
+      {
+        path: "/login",
+        element: <Login></Login>,
+      },
+      {
+        path: "/create-account",
+        element: <CreateAccount></CreateAccount>,
+      },
+      // { path: "*", element: <Navigate to="home" replace /> },
     ],
   },
 ]);

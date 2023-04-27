@@ -1,10 +1,14 @@
+import { signOut } from "firebase/auth";
 import { FC, useContext, useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
 import { auth } from "../lib/firebase";
 
 export const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
+
+  useEffect(() => {
+    console.log(auth.currentUser);
+  });
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -12,8 +16,8 @@ export const NavBar = () => {
 
   const handleLogout = () => {
     console.log("Logging out...");
-    auth.signOut();
     setShowMenu(false);
+    signOut(auth);
   };
 
   return (
@@ -98,7 +102,6 @@ export const NavBar = () => {
           </div>
         </div>
       </nav>
-      <Outlet />
     </>
   );
 };
