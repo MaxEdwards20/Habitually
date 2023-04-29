@@ -1,14 +1,19 @@
-import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
+import {
+  Navigate,
+  RouteObject,
+  createBrowserRouter,
+  createHashRouter,
+} from "react-router-dom";
 import { NavBar } from "../components/Navbar";
 import { Calendar } from "../pages/Calendar";
 import { CreateAccount } from "../pages/CreateAccount";
+import { HabitMap } from "../pages/HabitMap";
 import { Home } from "../pages/Home";
 import { Layout } from "../pages/Layout";
 import { Login } from "../pages/Login";
 import { Profile } from "../pages/Profile";
-import { HabitMap } from "../pages/HabitMap";
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
   {
     path: "/",
     element: <Layout />,
@@ -39,7 +44,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/habit-map",
-        element: <HabitMap></HabitMap>
+        element: <HabitMap></HabitMap>,
       },
 
       { path: "*", element: <Navigate to="home" replace /> },
